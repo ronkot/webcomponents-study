@@ -13,3 +13,7 @@ Usage: `cd 01-creating-web-components && npm install && npm start`
 Example on usinig web components inside react. Shows how one has to manually attach event listeners and pass **properties** down to custom elements.
 
 Usage: `cd 02-using-web-components-inside-react && npm install && npm start`
+
+## License
+
+MIT
