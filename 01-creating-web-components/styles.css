@@ -1,0 +1,16 @@
+:host-context(.dark-theme) {
+  color: white;
+}
+
+:host-context(.dark-theme) .header {
+  background: black;
+}
+
+:host-context(.dark-theme) .content {
+  background: #333;
+}
+
+::slotted(*) {
+  margin: 0;
+  padding: 20px;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "slide-panel-lit-element.js",
+  "scripts": {
+    "start": "es-dev-server --node-resolve --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lit-element": "^2.2.1"
+  },
+  "devDependencies": {
+    "es-dev-server": "^1.40.0"
+  }
+}

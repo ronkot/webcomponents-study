@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web components study</title>
+    <script type="module" src="slide-panel-lit-element.js"></script>
+  </head>
+  <body> <!-- set body class "dark-theme" to test :host-context selector effect -->
+
+
+    <!-- Uncomment to use predefined "extension" or "theming" points -->
+    <!--
+    <style>
+      :root {
+        --slide-panel-header-color: salmon;
+      }  
+    </style>
+   -->
+
+    <slide-panel-vanilla>
+      <p slot="title">Vanilla slide panel</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+        mollit anim id est laborum.
+      </p>
+    </slide-panel-vanilla>
+
+    <br />
+
+    <slide-panel-lit-element>
+      <p slot="title">LitElement slide panel</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+        mollit anim id est laborum.
+      </p>
+    </slide-panel-lit-element>
+
+    <script>
+      function toggle(evt) {
+        evt.target.open = evt.detail.nextValue
+      }
+
+      document
+        .querySelector('slide-panel-vanilla')
+        .addEventListener('slide-panel-toggle', toggle)
+
+      document
+        .querySelector('slide-panel-lit-element')
+        .addEventListener('slide-panel-toggle', toggle)
+    </script>
+
+
+
+
+    <template id="slide-panel-vanilla-template">
+      <link rel="stylesheet" type="text/css" href="styles.css" />
+
+      <div class="header">
+        <slot name="title"></slot>
+        <span class="arrow">^</span>
+      </div>
+      <div class="content">
+        <slot></slot>
+      </div>
+
+      <style>
+        .header {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          background: var(--slide-panel-header-color, #eee);
+        }
+        .arrow {
+          margin-left: auto;
+          margin-right: 20px;
+        }
+        :host(:not([open])) .arrow {
+          transform: rotate(180deg);
+        }
+        :host(:not([open])) .content {
+          display: none;
+        }
+      </style>
+    </template>
+
+    <script>
+      class VanillaSlidePanel extends HTMLElement {
+        constructor() {
+          super()
+
+          const template = document.querySelector(
+            '#slide-panel-vanilla-template'
+          )
+          const content = document.importNode(template.content, true)
+
+          this.attachShadow({ mode: 'open' })
+          this.shadowRoot.appendChild(content)
+
+          const header = this.shadowRoot.querySelector('.header')
+          header.addEventListener('click', this.handleToggle.bind(this))
+        }
+
+        get open() {
+          return this.hasAttribute('open')
+        }
+
+        set open(value) {
+          if (value) {
+            this.setAttribute('open', '')
+          } else {
+            this.removeAttribute('open')
+          }
+        }
+
+        handleToggle() {
+          const toggleEvent = new CustomEvent('slide-panel-toggle', {
+            detail: { currentValue: this.open, nextValue: !this.open }
+          })
+          this.dispatchEvent(toggleEvent)
+        }
+      }
+
+      customElements.define('slide-panel-vanilla', VanillaSlidePanel)
+    </script>
+  </body>
+</html>
